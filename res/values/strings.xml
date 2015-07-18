@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndGWS</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="buttonStartLabel">Start</string>
+    <string name="buttonStopLabel">Stop</string>
+    <string name="buttonBindLabel">Bind</string>
+
+</resources>
