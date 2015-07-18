@@ -23,15 +23,27 @@ import android.util.Log;
 public class ActionTTS extends UtteranceProgressListener implements
 		TextToSpeech.OnInitListener {
 
+	public interface ActionTTSListener {
+
+		public void onInit(String uid);
+
+		public void onStart(String uid);
+
+		public void onDone(String uid);
+
+		public void onError(String uid);
+	}
+
 	class StringEntry {
 		String str;
 		ActionTTSListener actionTTSListener;
-		String utteranceId ;
+		String utteranceId;
 
-		public StringEntry(String str, ActionTTSListener actionTTSListener, String utteranceId) {
+		public StringEntry(String str, ActionTTSListener actionTTSListener,
+				String utteranceId) {
 			this.str = str;
 			this.actionTTSListener = actionTTSListener;
-			this.utteranceId = utteranceId ;
+			this.utteranceId = utteranceId;
 		}
 	}
 
@@ -59,7 +71,8 @@ public class ActionTTS extends UtteranceProgressListener implements
 		final String LOG_TAG = "ActionTTS.speak()";
 		Log.d(LOG_TAG, "handle speak() call");
 
-		String utteranceId = Crypto.SHA1(str +"|"+ System.currentTimeMillis());
+		String utteranceId = Crypto
+				.SHA1(str + "|" + System.currentTimeMillis());
 
 		stringsSync.add(new StringEntry(str, actionTTSListener, utteranceId));
 
@@ -152,7 +165,7 @@ public class ActionTTS extends UtteranceProgressListener implements
 		StringEntry se = stringsPlayingSync.get(utteranceId);
 		if (se.actionTTSListener != null)
 			se.actionTTSListener.onStart(utteranceId);
-}
+	}
 
 	/**
 	 * implements UtteranceProgressListener
@@ -185,16 +198,6 @@ public class ActionTTS extends UtteranceProgressListener implements
 		StringEntry se = stringsPlayingSync.remove(utteranceId);
 		if (se.actionTTSListener != null)
 			se.actionTTSListener.onError(utteranceId);
-}
-
-	public interface ActionTTSListener {
-
-		public void onInit(String uid);
-
-		public void onStart(String uid);
-
-		public void onDone(String uid);
-
-		public void onError(String uid);
 	}
+
 }

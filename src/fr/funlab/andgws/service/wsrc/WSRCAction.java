@@ -16,6 +16,7 @@ import com.koushikdutta.async.http.WebSocket;
 import fr.funlab.andgws.service.HttpServerService;
 import fr.funlab.andgws.service.wsrc.action.ActionTTS;
 import fr.funlab.andgws.service.wsrc.action.ActionTTS.ActionTTSListener;
+import fr.funlab.util.JsonMessage;
 
 /**
  * @author cyrille
@@ -35,17 +36,14 @@ public class WSRCAction extends HttpServerService.WebSocketRequestCallbackBase {
 
 		// final String LOG_TAG = "WSRCAction.onString()";
 
-		JSONObject jsonObj;
 		try {
 			action(webSocket, str);
-			jsonObj = new JSONObject("{result:\"ok\"}");
-			webSocket.send(jsonObj.toString());
+			webSocket.send(JsonMessage.Recevied().toString());
 
 		} catch (JSONException e) {
 			try {
-				jsonObj = new JSONObject("{error:\"Invalid JSON\",data:\""
-						+ e.getMessage() + "\"}");
-				webSocket.send(jsonObj.toString());
+				webSocket.send(JsonMessage
+						.Error("Invalid JSON", e.getMessage()).toString());
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -87,63 +85,40 @@ public class WSRCAction extends HttpServerService.WebSocketRequestCallbackBase {
 				@Override
 				public void onInit(String utteranceId) {
 					try {
-						JSONObject jsonObj = new JSONObject(
-								"{result:\"init\",data:\"" + utteranceId
-										+ "\"}");
-						webSocket.send(jsonObj.toString());
-
+						webSocket.send(JsonMessage.Init(utteranceId).toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
-
 				@Override
 				public void onStart(String utteranceId) {
 					try {
-						JSONObject jsonObj = new JSONObject(
-								"{result:\"start\",data:\"" + utteranceId
-										+ "\"}");
-						webSocket.send(jsonObj.toString());
-
+						webSocket.send(JsonMessage.Start(utteranceId).toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
-
 				@Override
 				public void onDone(String utteranceId) {
 
 					try {
-						JSONObject jsonObj = new JSONObject(
-								"{result:\"done\",data:\"" + utteranceId
-										+ "\"}");
-						webSocket.send(jsonObj.toString());
-
+						webSocket.send(JsonMessage.Done(utteranceId).toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 
 				@Override
 				public void onError(String utteranceId) {
 					try {
-						JSONObject jsonObj = new JSONObject(
-								"{error:\"Invalid JSON\",data:\""
-										+ "unknow error for " + utteranceId
-										+ "\"}");
-						webSocket.send(jsonObj.toString());
-
+						webSocket.send(JsonMessage.Error("TTS Error", utteranceId).toString());
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 
 			});
