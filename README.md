@@ -6,4 +6,5 @@ This is a simple android device's hardwares and services gateway wich communicat
 Features:
 - TTS speech engine
 - ...
- 
+
+This software is distributed under terms of the GNU GENERAL PUBLIC LICENSE Version 3.
